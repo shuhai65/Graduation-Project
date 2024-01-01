@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scau.client.mapper.AquariumPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumPermission">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="permissionName" column="permission_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,permission_name
+    </sql>
+</mapper>
