@@ -30,19 +30,16 @@ public class AquariumRolePermission implements Serializable {
     /**
     * 
     */
-    @NotNull(message="[]不能为空")
     @ApiModelProperty("")
     private Long id;
     /**
     * 角色ID
     */
-    @NotNull(message="[角色ID]不能为空")
     @ApiModelProperty("角色ID")
     private Long roleId;
     /**
     * 权限ID
     */
-    @NotNull(message="[权限ID]不能为空")
     @ApiModelProperty("权限ID")
     private Long permissionId;
 }

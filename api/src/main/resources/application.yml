@@ -3,6 +3,32 @@ project:
   name: aquarium
 
 spring:
+  # 发送者邮箱相关配置
+  mail:
+    # SMTP服务器域名
+    host: smtp.163.com
+    # 编码集
+    default-encoding: UTF-8
+    # 邮箱用户名
+    username: examboost@163.com
+    # 授权码(注意不是邮箱密码！)
+    password: NDINJDWHQUYJBOML
+    # 协议：smtps
+    protocol: smtps
+    # 详细配置
+    properties:
+      mail:
+        smtp:
+          # 设置是否需要认证,如果为true,那么用户名和密码就必须的,
+          # 如果设置false,可以不设置用户名和密码
+          # (前提要知道对接的平台是否支持无密码进行访问的)
+          auth: true
+          # STARTTLS[1]  是对纯文本通信协议的扩展。
+          # 它提供一种方式将纯文本连接升级为加密连接（TLS或SSL）
+          # 而不是另外使用一个端口作加密通信。
+          starttls:
+            enable: true
+            required: true
   security:
     user:
       name: scau
@@ -10,7 +36,7 @@ spring:
   datasource:
     username: root
     password: 1234
-    url: jdbc:mysql://localhost:3306/aquarium?useUnicode=true&&useSSL=false&serverTimezone=GMT%2B8&&allowPublicKeyRetrieval=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/aquarium_system?useUnicode=true&&useSSL=false&serverTimezone=GMT%2B8&&allowPublicKeyRetrieval=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
     driver-class-name: com.mysql.cj.jdbc.Driver
   #Redis相关配置
   redis:
@@ -47,7 +73,7 @@ knife4j:
     swagger-model-name: 实体类列表
 
 jwt:
-  secret_key: examboost134762168
+  secret_key: aquarium
   expiration_time: 259200
 
 mybatis:
@@ -57,7 +83,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 token_exclude:
-  path: /error,/actuator,/swagger-ui.html,/swagger-resources,/webjars,/v2,/v3,/doc.html,/favicon.ico,/csrf,/image,/account
+  path: /error,/actuator,/swagger-ui.html,/swagger-resources,/webjars,/v2,/v3,/doc.html,/favicon.ico,/csrf,/image,/user
 
 custom: # 自定义http启动端口
   http-port: 8080

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    private static final String ID = "jti";
+    private static final String Info = "jti";
 
     @Autowired
     SystemConfig systemConfig;
@@ -30,13 +30,13 @@ public class JwtUtil {
      * 1. ☑️ 根据用户信息生成 token
      * 用户信息从 security 框架 UserDetails 中获取
      *
-     * @param userId : 用户id
+     * @param info : 用户信息
      * @return : 返回重载方法generateToken(claims),根据荷载生成 JWT token
      */
-    public String generateToken(String userId) {
+    public String generateToken(String info) {
         // 准备存放 token 的容器（荷载）
         Map<String, Object> claims = new HashMap<>();
-        claims.put(ID, userId);
+        claims.put(Info, info);
         return generateToken(claims); // 增加其它信息（ 本类内新建方法）
     }
 
@@ -68,23 +68,23 @@ public class JwtUtil {
     }
 
     /**
-     * 4. ☑️ 从 token 中获取id
+     * 4. ☑️ 从 token 中获取 info
      *
      * @param token : Sting类型的token
-     * @return : 返回id
+     * @return : 返回info
      */
-    public String getUserIdFromToken(String token) {
-        // 登录用户id
-        String id;
+    public String getUserInfoFromToken(String token) {
+        // info
+        String info;
         try {
             Claims claims = getClaimsFormToken(token); // 根据 token 获取荷载（ 本类内新建方法 ）
             // 通过荷载调用 getSubject 方法，获取id
-            id = claims.getId();
+            info = claims.getId();
         } catch (Exception e) {
             // 有异常 id 为空
-            id = null;
+            info = null;
         }
-        return id;
+        return info;
     }
 
     /**
@@ -129,7 +129,7 @@ public class JwtUtil {
     private boolean isTokenExpired(String token) {
         // 获取 token 失效时间，本类内新建此方法
         Date expireDate = getExpiredDateFromToken(token);
-        System.out.println(expireDate);
+//        System.out.println(expireDate);
         // 如果 token 过期时间在当前时间前面，有效
         return !expireDate.before(new Date());
     }

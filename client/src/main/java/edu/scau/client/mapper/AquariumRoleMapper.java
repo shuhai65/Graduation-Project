@@ -1,15 +1,25 @@
 package edu.scau.client.mapper;
 
+import edu.scau.client.domain.AquariumPermission;
 import edu.scau.client.domain.AquariumRole;
 
-/**
-* @author Edward
-* @description 针对表【aqs_role(角色信息表)】的数据库操作Mapper
-* @createDate 2024-01-01 10:59:20
-* @Entity edu.scau.client.domain.AquariumRole
-*/
-public interface AquariumRoleMapper {
+import java.util.List;
 
+
+public interface AquariumRoleMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(AquariumRole record);
+
+    int insertSelective(AquariumRole record);
+
+    AquariumRole selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(AquariumRole record);
+
+    int updateByPrimaryKey(AquariumRole record);
+
+    List<AquariumPermission> findPermissionsByRoleId(Long id);
 }
 
 

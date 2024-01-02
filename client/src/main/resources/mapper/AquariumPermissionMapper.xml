@@ -12,4 +12,54 @@
     <sql id="Base_Column_List">
         id,permission_name
     </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_permission
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from aquarium_permission
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="edu.scau.client.domain.AquariumPermission" useGeneratedKeys="true">
+        insert into aquarium_permission
+            (id, permission_name)
+        values (#{id,jdbcType=BIGINT}, #{permissionName,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="edu.scau.client.domain.AquariumPermission" useGeneratedKeys="true">
+        insert into aquarium_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="permissionName != null">permission_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="permissionName != null">#{permissionName,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="edu.scau.client.domain.AquariumPermission">
+        update aquarium_permission
+        <set>
+            <if test="permissionName != null">
+                permission_name = #{permissionName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="edu.scau.client.domain.AquariumPermission">
+        update aquarium_permission
+        set permission_name = #{permissionName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
 </mapper>

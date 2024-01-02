@@ -1,6 +1,6 @@
 package edu.scau.common.config;
 
-import edu.scau.common.hander.TokenInterceptor;
+//import edu.scau.common.hander.TokenInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
-    @Autowired
-    private TokenInterceptor tokenInterceptor;
+//    @Autowired
+//    private TokenInterceptor tokenInterceptor;
 
     /**
      * 设置静态资源映射
@@ -53,6 +53,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         // 注册拦截器并设置拦截路径
-        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
+//        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
     }
 }

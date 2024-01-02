@@ -5,11 +5,72 @@
 <mapper namespace="edu.scau.client.mapper.AquariumRoleMapper">
 
     <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumRole">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="PermissionResult" type="edu.scau.client.domain.AquariumPermission">
+        <result column="permission_name" property="permissionName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,role_name
     </sql>
+
+    <select id="findPermissionsByRoleId" resultMap="PermissionResult" parameterType="java.lang.Long">
+        select permission_name
+        from aquarium_role_permission
+        join aquarium_permission on aquarium_role_permission.permission_id = aquarium_permission.id
+        where role_id = #{roleId,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_role
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from aquarium_role
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="edu.scau.client.domain.AquariumRole"
+            useGeneratedKeys="true">
+        insert into aquarium_role
+            (id, role_name)
+        values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="edu.scau.client.domain.AquariumRole" useGeneratedKeys="true">
+        insert into aquarium_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roleName != null">role_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="roleName != null">#{roleName,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="edu.scau.client.domain.AquariumRole">
+        update aquarium_role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="edu.scau.client.domain.AquariumRole">
+        update aquarium_role
+        set role_name = #{roleName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
 </mapper>

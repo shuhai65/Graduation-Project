@@ -30,15 +30,11 @@ public class AquariumRole implements Serializable {
     /**
     * 
     */
-    @NotNull(message="[]不能为空")
     @ApiModelProperty("")
     private Long id;
     /**
     * 角色名
     */
-    @NotBlank(message="[角色名]不能为空")
-    @Size(max= 20,message="编码长度不能超过20")
     @ApiModelProperty("角色名")
-    @Length(max= 20,message="编码长度不能超过20")
     private String roleName;
 }

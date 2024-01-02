@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class UserRedisBO {
+public class UserRedisBO implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
     /**
      * 用户ID

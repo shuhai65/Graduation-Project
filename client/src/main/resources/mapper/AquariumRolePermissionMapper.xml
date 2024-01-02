@@ -5,12 +5,75 @@
 <mapper namespace="edu.scau.client.mapper.AquariumRolePermissionMapper">
 
     <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumRolePermission">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="roleId" column="role_id" jdbcType="BIGINT"/>
-            <result property="permissionId" column="permission_id" jdbcType="BIGINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <result property="permissionId" column="permission_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,role_id,permission_id
     </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_role_permission
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectPermissionByRoleId" resultType="edu.scau.client.domain.AquariumPermission"
+            parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_role_permission union aquarium_permission
+        where role_id = #{roleId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from aquarium_role_permission
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="edu.scau.client.domain.AquariumRolePermission"
+            useGeneratedKeys="true">
+        insert into aquarium_role_permission
+            (id, role_id, permission_id)
+        values (#{id,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{permissionId,jdbcType=BIGINT})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="edu.scau.client.domain.AquariumRolePermission" useGeneratedKeys="true">
+        insert into aquarium_role_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="permissionId != null">permission_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="roleId != null">#{roleId,jdbcType=BIGINT},</if>
+            <if test="permissionId != null">#{permissionId,jdbcType=BIGINT},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="edu.scau.client.domain.AquariumRolePermission">
+        update aquarium_role_permission
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=BIGINT},
+            </if>
+            <if test="permissionId != null">
+                permission_id = #{permissionId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="edu.scau.client.domain.AquariumRolePermission">
+        update aquarium_role_permission
+        set role_id       = #{roleId,jdbcType=BIGINT},
+            permission_id = #{permissionId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
 </mapper>

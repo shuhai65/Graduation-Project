@@ -20,8 +20,9 @@ public enum RedisEnum {
     PREFIX_NOTICE("notice:", "通知"),
     PREFIX_TASK_QUEUE("task_queue:", "任务队列"),
     EXPIRE_TIME("259200", "过期时间"),
-    CAROUSEL("carousel", "轮播图");
-
+    CAROUSEL("carousel", "轮播图"),
+    EMAIL_CODE("email_code", "邮箱验证码"),
+    EMAIL_CODE_EXPIRE_TIME("300", "邮箱验证码过期时间");
     private final String value;
 
     private final String desc;
