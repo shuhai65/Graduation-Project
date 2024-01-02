@@ -1,4 +1,4 @@
-package edu.scau.client.user.domain;
+package edu.scau.client.user.domain.req;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;

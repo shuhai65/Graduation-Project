@@ -1,10 +1,9 @@
 package edu.scau.api.controller;
 
-import cn.hutool.http.HttpRequest;
-import edu.scau.client.user.domain.EmailResetPasswordReq;
-import edu.scau.client.user.domain.LoginReq;
-import edu.scau.client.user.domain.RegisterReq;
-import edu.scau.client.user.domain.ResetPasswordReq;
+import edu.scau.client.user.domain.req.EmailResetPasswordReq;
+import edu.scau.client.user.domain.req.LoginReq;
+import edu.scau.client.user.domain.req.RegisterReq;
+import edu.scau.client.user.domain.req.ResetPasswordReq;
 import edu.scau.client.user.service.UserService;
 import edu.scau.common.ResultData;
 import edu.scau.common.utils.JwtUtil;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,14 +50,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ApiOperation(value = "用户注册")
-    public ResultData register(@RequestBody @Validated RegisterReq registerReq){
+    public ResultData<Object> register(@RequestBody @Validated RegisterReq registerReq){
         userService.register(registerReq);
         return ResultData.success();
     }
 
     @PostMapping("/logout")
     @ApiOperation(value = "用户登出")
-    public ResultData logout(HttpServletRequest request){
+    public ResultData<Object> logout(HttpServletRequest request){
         String authorization = request.getHeader("Authorization");
         String Authorization = "Bearer:" + authorization.substring(7);
         System.out.println(Authorization);
@@ -69,14 +67,14 @@ public class AuthController {
 
     @PostMapping("/email/resetPassword")
     @ApiOperation(value = "发送重置密码邮件")
-    public ResultData sendEmail(@RequestBody @Validated EmailResetPasswordReq emailResetPasswordReq){
+    public ResultData<Object> sendEmail(@RequestBody @Validated EmailResetPasswordReq emailResetPasswordReq){
         userService.sendEmail(emailResetPasswordReq);
         return ResultData.success();
     }
 
     @PostMapping("/resetPassword")
     @ApiOperation(value = "重置密码")
-    public ResultData resetPassword(@RequestBody @Validated ResetPasswordReq resetPasswordReq){
+    public ResultData<Object> resetPassword(@RequestBody @Validated ResetPasswordReq resetPasswordReq){
         userService.resetPassword(resetPasswordReq);
         return ResultData.success();
     }

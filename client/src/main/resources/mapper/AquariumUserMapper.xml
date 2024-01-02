@@ -12,6 +12,7 @@
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="INTEGER"/>
             <result property="roleId" column="role_id" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -20,7 +21,7 @@
 
     <sql id="Base_Column_List">
         id,username,password,
-        nickname,phone,email,address,
+        nickname,phone,email,address,sex
         role_id,create_time,update_time,
         is_delete
     </sql>
@@ -68,6 +69,7 @@
             <if test="phone != null">phone,</if>
             <if test="email != null">email,</if>
             <if test="address != null">address,</if>
+            <if test="sex != null">sex,</if>
             <if test="roleId != null">role_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
@@ -81,6 +83,7 @@
             <if test="phone != null">#{phone,jdbcType=VARCHAR},</if>
             <if test="email != null">#{email,jdbcType=VARCHAR},</if>
             <if test="address != null">#{address,jdbcType=VARCHAR},</if>
+            <if test="sex != null">#{sex,jdbcType=INTEGER},</if>
             <if test="roleId != null">#{roleId,jdbcType=BIGINT},</if>
             <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
             <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
@@ -109,6 +112,9 @@
             <if test="address != null">
                 address = #{address,jdbcType=VARCHAR},
             </if>
+            <if test="sex != null">
+                is_delete = #{sex,jdbcType=INTEGER},
+            </if>
             <if test="roleId != null">
                 role_id = #{roleId,jdbcType=BIGINT},
             </if>
@@ -133,6 +139,7 @@
             phone = #{phone,jdbcType=VARCHAR},
             email = #{email,jdbcType=VARCHAR},
             address = #{address,jdbcType=VARCHAR},
+            sex = #{sex,jdbcType=INTEGER},
             role_id = #{roleId,jdbcType=BIGINT},
             create_time = #{createTime,jdbcType=TIMESTAMP},
             update_time = #{updateTime,jdbcType=TIMESTAMP},

@@ -5,6 +5,9 @@ import edu.scau.client.domain.AquariumRole;
 import edu.scau.client.domain.AquariumUser;
 import edu.scau.client.mapper.AquariumRoleMapper;
 import edu.scau.client.mapper.AquariumUserMapper;
+import edu.scau.common.domain.UserRedisBO;
+import edu.scau.common.utils.AuthUserContext;
+import edu.scau.common.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
         for(int i = 0; i < permissions.size(); i++) {
             permissionArray[i] = permissions.get(i).getPermissionName();
         }
+        AuthUserContext.set(new UserRedisBO(aquariumUser.getId(), aquariumUser.getUsername()));
         return User.withUsername(aquariumUser.getUsername()).password(aquariumUser.getPassword()).authorities(permissionArray).build();
     }
 }

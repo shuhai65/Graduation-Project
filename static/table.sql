@@ -15,6 +15,7 @@ CREATE TABLE aquarium_user
     phone       VARCHAR(20)        NOT NULL DEFAULT '' COMMENT '电话号码',                                            -- 电话号码，不允许为空
     email       VARCHAR(60)        NOT NULL DEFAULT '' COMMENT '邮箱',                                                -- 邮箱，默认为空字符串
     address     VARCHAR(100)       NOT NULL DEFAULT '' COMMENT '地址',                                                -- 地址，默认为空字符串
+    sex         INT                NOT NULL DEFAULT 0 COMMENT '性别',                                                 -- 性别，默认为0表示未知 1表示男 2表示女
     role_id     BIGINT             NOT NULL DEFAULT 0 COMMENT '角色ID',                                               -- 角色ID，不允许为空
     create_time DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',                             -- 创建时间，默认为当前时间
     update_time DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 更新时间，默认为当前时间，自动更新

@@ -69,6 +69,11 @@ public class AquariumUser implements Serializable {
     @ApiModelProperty("地址")
     private String address;
     /**
+     * 性别
+     */
+    @ApiModelProperty("性别")
+    private Integer sex;
+    /**
     * 角色ID
     */
     @ApiModelProperty("角色ID")
