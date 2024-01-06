@@ -1,5 +1,7 @@
 package edu.scau.client.security;
 
+import edu.scau.common.exception.AccessDeniedException;
+import edu.scau.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +28,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         }
 
-        throw new BadCredentialsException("Error!!");
+        throw new AccessDeniedException("用户名或密码错误");
     }
 
     @Override

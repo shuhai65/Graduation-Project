@@ -8,6 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="avatarId" column="avatar_id" jdbcType="BIGINT"/>
             <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -20,8 +21,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,password,
-        nickname,phone,email,address,sex
+        id,username,password,avatar_id,
+        nickname,phone,email,address,sex,
         role_id,create_time,update_time,
         is_delete
     </sql>
@@ -65,6 +66,7 @@
             <if test="id != null">id,</if>
             <if test="username != null">username,</if>
             <if test="password != null">password,</if>
+            <if test="avatarId != null">avatar_id,</if>
             <if test="nickname != null">nickname,</if>
             <if test="phone != null">phone,</if>
             <if test="email != null">email,</if>
@@ -79,6 +81,7 @@
             <if test="id != null">#{id,jdbcType=BIGINT},</if>
             <if test="username != null">#{username,jdbcType=VARCHAR},</if>
             <if test="password != null">#{password,jdbcType=VARCHAR},</if>
+            <if test="avatarId != null">#{avatarId,jdbcType=BIGINT},</if>
             <if test="nickname != null">#{nickname,jdbcType=VARCHAR},</if>
             <if test="phone != null">#{phone,jdbcType=VARCHAR},</if>
             <if test="email != null">#{email,jdbcType=VARCHAR},</if>
@@ -99,6 +102,9 @@
             </if>
             <if test="password != null">
                 password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarId != null">
+                avatar_id = #{avatarId,jdbcType=BIGINT},
             </if>
             <if test="nickname != null">
                 nickname = #{nickname,jdbcType=VARCHAR},
@@ -135,6 +141,7 @@
         update aquarium_user
         set username = #{username,jdbcType=VARCHAR},
             password = #{password,jdbcType=VARCHAR},
+            avatar_id = #{avatarId,jdbcType=BIGINT},
             nickname = #{nickname,jdbcType=VARCHAR},
             phone = #{phone,jdbcType=VARCHAR},
             email = #{email,jdbcType=VARCHAR},
@@ -147,6 +154,11 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+    <update id="updateUserAvatar">
+        update aquarium_user
+        set avatar_id = #{avatarId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
 
 </mapper>

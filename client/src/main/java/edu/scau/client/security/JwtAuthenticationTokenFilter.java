@@ -22,7 +22,7 @@ public class JwtAuthenticationTokenFilter  extends OncePerRequestFilter {
     private final static String AUTH_HEADER_TYPE = "Bearer";
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private MyUserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

@@ -20,6 +20,8 @@ public interface AquariumUserMapper {
     AquariumUser selectByUsername(String username);
 
     AquariumUser selectByUsernameAndPassword(AquariumUser aquariumUser);
+
+    int updateUserAvatar(Long id, Long avatarId);
 }
 
 

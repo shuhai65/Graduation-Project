@@ -69,20 +69,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="AquariumPermission" />
-                  <option name="tableName" value="aqs_permission" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="AquariumRole" />
-                  <option name="tableName" value="aqs_role" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="AquariumRolePermission" />
-                  <option name="tableName" value="aqs_role_permission" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="AquariumUser" />
-                  <option name="tableName" value="aqs_user" />
+                  <option name="className" value="AquariumImage" />
+                  <option name="tableName" value="aquarium_image" />
                 </TableUIInfo>
               </list>
             </option>

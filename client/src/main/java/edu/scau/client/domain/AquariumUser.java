@@ -49,6 +49,11 @@ public class AquariumUser implements Serializable {
     @ApiModelProperty("密码")
     private String password;
     /**
+     * 头像
+     */
+    @ApiModelProperty("头像")
+    private Long avatarId;
+    /**
     * 昵称
     */
     @ApiModelProperty("昵称")

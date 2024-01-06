@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scau.client.mapper.AquariumImageMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumImage">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="data" column="data" jdbcType="CLOB"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,data
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_image
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="edu.scau.client.domain.AquariumImage"
+            useGeneratedKeys="true">
+        insert into aquarium_image
+            (data)
+        values (#{data,jdbcType=LONGVARBINARY})
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from aquarium_image
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="edu.scau.client.domain.AquariumImage">
+        update aquarium_image
+        set data = #{data,jdbcType=LONGVARBINARY}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

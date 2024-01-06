@@ -78,14 +78,13 @@ public class WebSecurityConfig {
                         "/doc.html",
                         "/favicon.ico",
                         "/csrf",
-                        "/image/**",
-                        "/user/**"
+                        "/image/**"
                 ).permitAll()
                 //对登录注册允许匿名访问
                 .antMatchers(HttpMethod.POST,
+                        "/user/email/resetPassword",
                         "/user/login",
                         "/user/register",
-                        "/user/email/resetPassword",
                         "/user/resetPassword"
                 ).permitAll()
                 //跨域请求会先进行一次options请求
