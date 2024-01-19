@@ -1,9 +1,9 @@
 package edu.scau.api.controller;
 
-import edu.scau.client.user.domain.req.EmailResetPasswordReq;
 import edu.scau.client.user.domain.req.LoginReq;
 import edu.scau.client.user.domain.req.RegisterReq;
 import edu.scau.client.user.domain.req.ResetPasswordReq;
+import edu.scau.client.user.domain.vo.LoginVo;
 import edu.scau.client.user.service.UserService;
 import edu.scau.common.ResultData;
 import edu.scau.common.utils.JwtUtil;
@@ -29,6 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 @Api(value = "AuthController", tags = "用户认证接口")
 public class AuthController {
 
+    /**
+     * 1.用户登录
+     * 2.用户注册
+     * 3.用户登出
+     * 4.发送重置密码邮件
+     * 5.重置密码
+     */
+
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -38,14 +46,13 @@ public class AuthController {
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
-    public ResultData<String> login(@RequestBody @Validated LoginReq loginReq){
+    public ResultData<LoginVo> login(@RequestBody @Validated LoginReq loginReq){
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         String token = jwtUtil.generateToken(loginReq.getUsername());
-        userService.login(loginReq,token);
-        String Authorization = "Bearer:" + token;
-        return ResultData.success(Authorization);
+        LoginVo login = userService.login(loginReq, token);
+        return ResultData.success(login);
     }
 
     @PostMapping("/register")
@@ -62,13 +69,6 @@ public class AuthController {
         String Authorization = "Bearer:" + authorization.substring(7);
         System.out.println(Authorization);
         userService.logout(Authorization);
-        return ResultData.success();
-    }
-
-    @PostMapping("/email/resetPassword")
-    @ApiOperation(value = "发送重置密码邮件")
-    public ResultData<Object> sendEmail(@RequestBody @Validated EmailResetPasswordReq emailResetPasswordReq){
-        userService.sendEmail(emailResetPasswordReq);
         return ResultData.success();
     }
 

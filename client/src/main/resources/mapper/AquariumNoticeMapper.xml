@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scau.client.mapper.AquariumNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumNotice">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="LONGVARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,title,
+        content,create_time
+    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aquarium_notice
+        where id = #{id}
+    </delete>
+    <select id="selectByUserId" resultType="edu.scau.client.notice.domain.NoticeVo">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_notice
+        where user_id = #{userId}
+    </select>
+</mapper>

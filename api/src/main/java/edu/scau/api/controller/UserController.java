@@ -21,6 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Api(value = "UserController", tags = "用户管理接口")
 public class UserController {
+
+    /**
+     * 1.获取用户信息
+     * 2.更新用户信息
+     * 3.上传头像
+     * 4.获取用户头像
+     * 5.获取用户信息
+     */
+
     @Autowired
     UserService userService;
 

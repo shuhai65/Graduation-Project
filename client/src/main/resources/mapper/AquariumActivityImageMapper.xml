@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scau.client.mapper.AquariumActivityImageMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumActivityImage">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="activityId" column="activity_id" jdbcType="BIGINT"/>
+        <result property="imageId" column="image_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,activity_id,image_id
+    </sql>
+
+    <insert id="insert" parameterType="edu.scau.client.domain.AquariumActivityImage">
+        insert into aquarium_activity_image (id, activity_id, image_id)
+        values (#{id,jdbcType=BIGINT}, #{activityId,jdbcType=BIGINT}, #{imageId,jdbcType=BIGINT})
+    </insert>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into aquarium_activity_image (id, activity_id, image_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.activityId,jdbcType=BIGINT}, #{item.imageId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey">
+        update aquarium_activity_image
+        set activity_id = #{activityId,jdbcType=BIGINT},
+            image_id = #{imageId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        delete
+        from aquarium_activity_image
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteById">
+        delete
+        from aquarium_activity_image
+        where activity_id = #{arg0,jdbcType=BIGINT}
+        and image_id = #{arg1,jdbcType=BIGINT}
+    </delete>
+    <select id="selectByPrimaryKey" resultType="edu.scau.client.domain.AquariumActivityImage">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_activity_image
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByActivityIdAndImageId" resultType="java.lang.Boolean">
+        select
+        count(*) > 0
+        from aquarium_activity_image
+        where activity_id = #{arg0,jdbcType=BIGINT}
+        and image_id = #{arg1,jdbcType=BIGINT}
+    </select>
+    <select id="selectByActivityId" resultType="java.lang.Long">
+        select
+        image_id
+        from aquarium_activity_image
+        where activity_id = #{arg0,jdbcType=BIGINT}
+    </select>
+
+</mapper>

@@ -9,11 +9,6 @@
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="avatarId" column="avatar_id" jdbcType="BIGINT"/>
-            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
-            <result property="phone" column="phone" jdbcType="VARCHAR"/>
-            <result property="email" column="email" jdbcType="VARCHAR"/>
-            <result property="address" column="address" jdbcType="VARCHAR"/>
-            <result property="sex" column="sex" jdbcType="INTEGER"/>
             <result property="roleId" column="role_id" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -22,7 +17,6 @@
 
     <sql id="Base_Column_List">
         id,username,password,avatar_id,
-        nickname,phone,email,address,sex,
         role_id,create_time,update_time,
         is_delete
     </sql>
@@ -67,11 +61,6 @@
             <if test="username != null">username,</if>
             <if test="password != null">password,</if>
             <if test="avatarId != null">avatar_id,</if>
-            <if test="nickname != null">nickname,</if>
-            <if test="phone != null">phone,</if>
-            <if test="email != null">email,</if>
-            <if test="address != null">address,</if>
-            <if test="sex != null">sex,</if>
             <if test="roleId != null">role_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
@@ -82,11 +71,6 @@
             <if test="username != null">#{username,jdbcType=VARCHAR},</if>
             <if test="password != null">#{password,jdbcType=VARCHAR},</if>
             <if test="avatarId != null">#{avatarId,jdbcType=BIGINT},</if>
-            <if test="nickname != null">#{nickname,jdbcType=VARCHAR},</if>
-            <if test="phone != null">#{phone,jdbcType=VARCHAR},</if>
-            <if test="email != null">#{email,jdbcType=VARCHAR},</if>
-            <if test="address != null">#{address,jdbcType=VARCHAR},</if>
-            <if test="sex != null">#{sex,jdbcType=INTEGER},</if>
             <if test="roleId != null">#{roleId,jdbcType=BIGINT},</if>
             <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
             <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
@@ -105,21 +89,6 @@
             </if>
             <if test="avatarId != null">
                 avatar_id = #{avatarId,jdbcType=BIGINT},
-            </if>
-            <if test="nickname != null">
-                nickname = #{nickname,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                phone = #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="email != null">
-                email = #{email,jdbcType=VARCHAR},
-            </if>
-            <if test="address != null">
-                address = #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="sex != null">
-                is_delete = #{sex,jdbcType=INTEGER},
             </if>
             <if test="roleId != null">
                 role_id = #{roleId,jdbcType=BIGINT},
@@ -142,11 +111,6 @@
         set username = #{username,jdbcType=VARCHAR},
             password = #{password,jdbcType=VARCHAR},
             avatar_id = #{avatarId,jdbcType=BIGINT},
-            nickname = #{nickname,jdbcType=VARCHAR},
-            phone = #{phone,jdbcType=VARCHAR},
-            email = #{email,jdbcType=VARCHAR},
-            address = #{address,jdbcType=VARCHAR},
-            sex = #{sex,jdbcType=INTEGER},
             role_id = #{roleId,jdbcType=BIGINT},
             create_time = #{createTime,jdbcType=TIMESTAMP},
             update_time = #{updateTime,jdbcType=TIMESTAMP},

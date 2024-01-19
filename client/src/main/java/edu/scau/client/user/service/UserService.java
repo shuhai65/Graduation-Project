@@ -6,7 +6,11 @@ import edu.scau.client.mail.service.MailService;
 import edu.scau.client.mapper.AquariumImageMapper;
 import edu.scau.client.mapper.AquariumRoleMapper;
 import edu.scau.client.mapper.AquariumUserMapper;
-import edu.scau.client.user.domain.req.*;
+import edu.scau.client.user.domain.req.LoginReq;
+import edu.scau.client.user.domain.req.RegisterReq;
+import edu.scau.client.user.domain.req.ResetPasswordReq;
+import edu.scau.client.user.domain.req.UserInfoUpdateReq;
+import edu.scau.client.user.domain.vo.LoginVo;
 import edu.scau.client.user.domain.vo.UserInfoVo;
 import edu.scau.common.constant.RedisEnum;
 import edu.scau.common.exception.BusinessException;
@@ -19,17 +23,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import java.sql.Blob;
 import java.util.Arrays;
 
 @Service
 public class UserService {
     @Autowired
-    private AquariumUserMapper aquariumUserMapper;
+    private AquariumUserMapper userMapper;
     @Autowired
-    private AquariumRoleMapper aquariumRoleMapper;
+    private AquariumRoleMapper roleMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -41,13 +43,14 @@ public class UserService {
     @Autowired
     private TemplateEngine templateEngine;
     @Autowired
-    private AquariumImageMapper aquariumImageMapper;
+    private AquariumImageMapper imageMapper;
 
-    public void login(LoginReq loginReq, String token) {
-        AquariumUser aquariumUser = aquariumUserMapper.selectByUsername(loginReq.getUsername());
+    public LoginVo login(LoginReq loginReq, String token) {
+        AquariumUser aquariumUser = userMapper.selectByUsername(loginReq.getUsername());
         //Bearer
         String Authorization = "Bearer:" + token;
         redisUtil.set(Authorization, aquariumUser, Long.parseLong(RedisEnum.TOKEN_EXPIRE_TIME.getValue()));
+        return new LoginVo(Authorization, Math.toIntExact(aquariumUser.getRoleId()));
     }
 
     @Transactional
@@ -57,7 +60,7 @@ public class UserService {
         aquariumUser.setPassword(passwordEncoder.encode(registerReq.getPassword()));
         aquariumUser.setRoleId(1L);
         try {
-            aquariumUserMapper.insert(aquariumUser);
+            userMapper.insert(aquariumUser);
         } catch (Exception e) {
             throw new BusinessException("用户名已存在");
         }
@@ -72,50 +75,43 @@ public class UserService {
 
     @Transactional
     public void resetPassword(ResetPasswordReq resetPasswordReq) {
-        //验证验证码
-        String code = (String) redisUtil.get(RedisEnum.EMAIL_CODE.getValue() + ":" + resetPasswordReq.getUsername());
-        if (!code.equals(resetPasswordReq.getCode())) {
-            throw new RuntimeException("验证码错误");
-        }
         //修改密码
-        AquariumUser aquariumUser = aquariumUserMapper.selectByUsername(resetPasswordReq.getUsername());
+        AquariumUser aquariumUser = userMapper.selectByUsername(resetPasswordReq.getUsername());
         aquariumUser.setPassword(passwordEncoder.encode(resetPasswordReq.getPassword()));
-        aquariumUserMapper.updateByPrimaryKeySelective(aquariumUser);
-        //删除验证码
-        redisUtil.del(RedisEnum.EMAIL_CODE.getValue() + ":" + resetPasswordReq.getUsername());
+        userMapper.updateByPrimaryKeySelective(aquariumUser);
     }
 
-    public void sendEmail(EmailResetPasswordReq emailResetPasswordReq) {
-        //验证邮箱是否存在
-        AquariumUser aquariumUser = aquariumUserMapper.selectByUsername(emailResetPasswordReq.getUsername());
-        if (aquariumUser == null) {
-            throw new RuntimeException("用户不存在");
-        }
-        if (!aquariumUser.getEmail().equals(emailResetPasswordReq.getEmail())) {
-            throw new RuntimeException("邮箱不正确");
-        }
-        //生成验证码
-        String generateCode = randomCodeUtil.generateCode();
-        //Verification_code.html
-        Context context = new Context();
-        context.setVariable("code", generateCode);
-        String emailContent = templateEngine.process("Verification_code", context);
-        //发送邮件
-        mailService.sendMail(emailResetPasswordReq.getEmail(), "验证码", emailContent);
-        //保存验证码
-        redisUtil.set(RedisEnum.EMAIL_CODE.getValue() + ":" + emailResetPasswordReq.getUsername(), generateCode, Long.parseLong(RedisEnum.EMAIL_CODE_EXPIRE_TIME.getValue()));
-    }
+//    public void sendEmail(EmailResetPasswordReq emailResetPasswordReq) {
+//        //验证邮箱是否存在
+//        AquariumUser aquariumUser = userMapper.selectByUsername(emailResetPasswordReq.getUsername());
+//        if (aquariumUser == null) {
+//            throw new RuntimeException("用户不存在");
+//        }
+//        if (!aquariumUser.getEmail().equals(emailResetPasswordReq.getEmail())) {
+//            throw new RuntimeException("邮箱不正确");
+//        }
+//        //生成验证码
+//        String generateCode = randomCodeUtil.generateCode();
+//        //Verification_code.html
+//        Context context = new Context();
+//        context.setVariable("code", generateCode);
+//        String emailContent = templateEngine.process("Verification_code", context);
+//        //发送邮件
+//        mailService.sendMail(emailResetPasswordReq.getEmail(), "验证码", emailContent);
+//        //保存验证码
+//        redisUtil.set(RedisEnum.EMAIL_CODE.getValue() + ":" + emailResetPasswordReq.getUsername(), generateCode, Long.parseLong(RedisEnum.EMAIL_CODE_EXPIRE_TIME.getValue()));
+//    }
 
     public UserInfoVo getUserInfo() {
         Long id = SecurityUtil.getUserInfo().getId();
         AquariumUser aquariumUser;
-        if(!redisUtil.hasKey(RedisEnum.PREFIX_USER.getValue() + RedisEnum.PREFIX_USER_INFO.getValue() + id)){
-            aquariumUser = aquariumUserMapper.selectByPrimaryKey(id);
-            if(aquariumUser == null){
+        if (!redisUtil.hasKey(RedisEnum.PREFIX_USER.getValue() + RedisEnum.PREFIX_USER_INFO.getValue() + id)) {
+            aquariumUser = userMapper.selectByPrimaryKey(id);
+            if (aquariumUser == null) {
                 throw new BusinessException("用户不存在");
             }
             redisUtil.set(RedisEnum.PREFIX_USER.getValue() + RedisEnum.PREFIX_USER_INFO.getValue() + id, aquariumUser, Long.parseLong(RedisEnum.USER_INFO_EXPIRE_TIME.getValue()));
-        }else {
+        } else {
             aquariumUser = (AquariumUser) redisUtil.get(RedisEnum.PREFIX_USER.getValue() + RedisEnum.PREFIX_USER_INFO.getValue() + id);
         }
         return new UserInfoVo(aquariumUser);
@@ -124,13 +120,9 @@ public class UserService {
     @Transactional
     public void updateUserInfo(UserInfoUpdateReq userInfoUpdateReq) {
         Long id = SecurityUtil.getUserInfo().getId();
-        AquariumUser aquariumUser = new AquariumUser().setAddress(userInfoUpdateReq.getAddress())
-                .setEmail(userInfoUpdateReq.getEmail())
-                .setNickname(userInfoUpdateReq.getNickname())
-                .setPhone(userInfoUpdateReq.getPhone())
-                .setSex(userInfoUpdateReq.getSex())
-                .setId(id);
-        aquariumUserMapper.updateByPrimaryKeySelective(aquariumUser);
+        AquariumUser aquariumUser = new AquariumUser().setUsername(userInfoUpdateReq.getUsername()).setId(id);
+        userMapper.updateByPrimaryKeySelective(aquariumUser);
+        redisUtil.del(RedisEnum.PREFIX_USER.getValue() + RedisEnum.PREFIX_USER_INFO.getValue() + id);
     }
 
     @Transactional
@@ -142,13 +134,13 @@ public class UserService {
         } catch (Exception e) {
             throw new BusinessException("上传失败");
         }
-        aquariumImageMapper.insert(aquariumImage);
-        aquariumUserMapper.updateUserAvatar(userId, aquariumImage.getId());
+        imageMapper.insert(aquariumImage);
+        userMapper.updateUserAvatar(userId, aquariumImage.getId());
         return aquariumImage.getId();
     }
 
     public String getAvatar(Long id) {
-        AquariumUser aquariumUser = aquariumUserMapper.selectByPrimaryKey(id);
+        AquariumUser aquariumUser = userMapper.selectByPrimaryKey(id);
         if (aquariumUser == null) {
             throw new BusinessException("用户不存在");
         }
@@ -156,7 +148,7 @@ public class UserService {
         if (avatarId == null) {
             throw new BusinessException("用户头像不存在");
         }
-        AquariumImage aquariumImage = aquariumImageMapper.selectByPrimaryKey(avatarId);
+        AquariumImage aquariumImage = imageMapper.selectByPrimaryKey(avatarId);
         if (aquariumImage == null) {
             throw new BusinessException("用户头像不存在");
         }
@@ -168,7 +160,7 @@ public class UserService {
     }
 
     public UserInfoVo getUserInfoById(Long id) {
-        AquariumUser aquariumUser = aquariumUserMapper.selectByPrimaryKey(id);
+        AquariumUser aquariumUser = userMapper.selectByPrimaryKey(id);
         if (aquariumUser == null) {
             throw new BusinessException("用户不存在");
         }

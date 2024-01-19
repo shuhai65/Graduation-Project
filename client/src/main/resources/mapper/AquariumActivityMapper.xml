@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.scau.client.mapper.AquariumActivityMapper">
+
+    <resultMap id="BaseResultMap" type="edu.scau.client.domain.AquariumActivity">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="LONGNVARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="fee" column="fee" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,content,
+        start_time,end_time,address,
+        fee,status,create_time,
+        update_time,is_delete
+    </sql>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="edu.scau.client.domain.AquariumActivity" useGeneratedKeys="true">
+        insert into aquarium_activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="address != null">address,</if>
+            <if test="fee != null">fee,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="isDelete != null">is_delete,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+            <if test="content != null">#{content,jdbcType=LONGNVARCHAR},</if>
+            <if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if>
+            <if test="endTime != null">#{endTime,jdbcType=TIMESTAMP},</if>
+            <if test="address != null">#{address,jdbcType=VARCHAR},</if>
+            <if test="fee != null">#{fee,jdbcType=DECIMAL},</if>
+            <if test="status != null">#{status,jdbcType=INTEGER},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+            <if test="isDelete != null">#{isDelete,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.scau.client.domain.AquariumActivity">
+        update aquarium_activity
+        <set>
+            <if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+            <if test="content != null">content = #{content,jdbcType=LONGNVARCHAR},</if>
+            <if test="startTime != null">start_time = #{startTime,jdbcType=TIMESTAMP},</if>
+            <if test="endTime != null">end_time = #{endTime,jdbcType=TIMESTAMP},</if>
+            <if test="address != null">address = #{address,jdbcType=VARCHAR},</if>
+            <if test="fee != null">fee = #{fee,jdbcType=DECIMAL},</if>
+            <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+            <if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+            <if test="isDelete != null">is_delete = #{isDelete,jdbcType=INTEGER},</if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByPrimaryKey">
+        update aquarium_activity
+        set is_delete = 1
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="edu.scau.client.domain.AquariumActivity">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_activity
+        where id = #{id,jdbcType=BIGINT} and is_delete = 0
+    </select>
+
+    <select id="selectByTitle" resultType="edu.scau.client.domain.AquariumActivity">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_activity
+        where title like concat('%', #{arg0,jdbcType=VARCHAR}, '%') and is_delete = 0
+    </select>
+
+    <select id="selectByPage" resultType="edu.scau.client.domain.AquariumActivity">
+        select
+        <include refid="Base_Column_List"/>
+        from aquarium_activity
+        where is_delete = 0
+        order by create_time desc
+        limit #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER}
+    </select>
+
+</mapper>

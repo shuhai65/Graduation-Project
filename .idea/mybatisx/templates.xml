@@ -69,8 +69,20 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="AquariumImage" />
-                  <option name="tableName" value="aquarium_image" />
+                  <option name="className" value="AquariumActivityUser" />
+                  <option name="tableName" value="aquarium_activity_user" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="AquariumActivity" />
+                  <option name="tableName" value="aquarium_activity" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="AquariumActivityImage" />
+                  <option name="tableName" value="aquarium_activity_image" />
+                </TableUIInfo>
+                <TableUIInfo>
+                  <option name="className" value="AquariumNotice" />
+                  <option name="tableName" value="aquarium_notice" />
                 </TableUIInfo>
               </list>
             </option>

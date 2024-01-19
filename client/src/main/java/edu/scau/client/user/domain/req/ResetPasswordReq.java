@@ -7,7 +7,5 @@ import lombok.Data;
 @ApiModel(description = "重置密码参数")
 public class ResetPasswordReq {
     private String username;
-    private String email;
     private String password;
-    private String code;
 }
